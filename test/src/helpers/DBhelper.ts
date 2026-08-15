@@ -1,4 +1,8 @@
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 import { Pool, PoolClient, QueryResult, QueryResultRow } from 'pg';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 /**
  * MIGRATION NOTE: file ini identik dengan versi WDIO — DBhelper.ts di project asli

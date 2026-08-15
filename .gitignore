@@ -7,3 +7,4 @@ node_modules/
 /playwright/.auth/
 .features-gen/
 README.md
+.env

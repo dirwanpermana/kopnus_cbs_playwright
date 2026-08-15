@@ -1,6 +1,9 @@
 import { test as base } from 'playwright-bdd';
 import { createBdd } from 'playwright-bdd';
 import { dbHelper } from '../../test/src/helpers/DBhelper';
+import SearchMenuCbs from '../../test/src/pageobjects/page_login_dashboard/searchMenu.page';
+import LogoutPage from '../../test/src/pageobjects/page_login_dashboard/logout.page';
+import PermohonanKresun from '../../test/src/pageobjects/page_permohonan_kresun_dan_antrian_komite/menuPermohonanKresun.page';
 
 /**
  * MIGRATION NOTE — DB connection lifecycle (WDIO -> Playwright):
@@ -19,7 +22,13 @@ type WorkerFixtures = {
   dbConnection: void;
 };
 
-const baseWithDb = base.extend<{}, WorkerFixtures>({
+type AppFixtures = {
+  searchMenuCbs: SearchMenuCbs;
+  permohonanKresun: PermohonanKresun;
+  logoutPage: LogoutPage;
+};
+
+const baseWithDb = base.extend<AppFixtures, WorkerFixtures>({
   dbConnection: [
     async ({}, use) => {
       await dbHelper.connect();
@@ -28,6 +37,15 @@ const baseWithDb = base.extend<{}, WorkerFixtures>({
     },
     { scope: 'worker', auto: true },
   ],
+  searchMenuCbs: async ({ page }, use) => {
+    await use(new SearchMenuCbs(page));
+  },
+  permohonanKresun: async ({ page }, use) => {
+    await use(new PermohonanKresun(page));
+  },
+  logoutPage: async ({ page }, use) => {
+    await use(new LogoutPage(page));
+  },
 });
 
 export const test = baseWithDb;

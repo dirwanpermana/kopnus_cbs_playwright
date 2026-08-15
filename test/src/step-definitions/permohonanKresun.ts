@@ -1,56 +1,66 @@
+import { createBdd } from 'playwright-bdd';
 import { expect } from '@playwright/test';
-import { When, Then } from '../../../src/support/fixtures';
-import { withStepScreenshot } from '../../../src/support/stepScreenshot';
-import { loadTestData } from '../helpers/dataLoader';
-import SearchMenuCbs from '../pageobjects/page_login_dashboard/searchMenu.page';
-import PermohonanKresun from '../pageobjects/page_permohonan_kresun_dan_antrian_komite/menuPermohonanKresun.page';
-import LogoutPage from '../pageobjects/page_login_dashboard/logout.page';
-import { generateNopen, nopenState } from '../scriptDatabase/generate_nopen';
+import { test } from '../../../src/support/fixtures';
 
-/**
- * MIGRATION NOTE — diff vs original test/src/step-definitions/permohonanKresun.ts:
- *   - Semua logic murni (getKresunTestData, isTopUpProgram, getNopenArray) SAMA PERSIS,
- *     tidak ada dependency WDIO.
- *   - Page objects sekarang di-instantiate per-step dengan `new X(page)`, bukan singleton import.
- *   - Setiap step body dibungkus `withStepScreenshot(page, ...)`.
- *   - BUG DITEMUKAN & DIPERBAIKI: kode asli hardcode `browser.url('http://10.30.8.40:5000/')`
- *     di tengah loop iterasi (navigasi ke home page antar-nopen) — sebuah IP internal
- *     yang di-hardcode, bukan pakai `process.env.CBS_URL`. Ini bug portabilitas: kalau
- *     environment QA lain punya CBS_URL beda, step ini akan selalu gagal/salah environment
- *     walau `.env` sudah benar. Diperbaiki jadi `process.env.CBS_URL` di bawah.
- *   - Semua `browser.pause(...)` di dalam loop DIHAPUS — pengganti selengkapnya ada di
- *     komentar inline pada tiap titik.
- */
+import { loadTestData } from '../helpers/dataLoader.js';
+import { generateNopen, nopenState } from '../scriptDatabase/generate_nopen.js';
 
+const { When, Then } = createBdd(test);
+
+// function untuk ambil data dari file JSON berdasarkan parameter jenisProgram
 function getKresunTestData(jenisProgram: string): any {
   const kresunFile: any = loadTestData('dataPermohonanKresun');
   const defaultData: any = kresunFile.dataPermohonanKresun || kresunFile;
+
+  // Normalisasi input string agar tidak sensitif huruf besar/kecil
   const programKey = jenisProgram.trim().toLowerCase();
 
   switch (programKey) {
     case 'new (sk di tangan)':
     case 'makro new reguler':
       return kresunFile.dataMakroNewReguler || defaultData;
+
     case 'top up':
     case 'makro top up':
       return kresunFile.dataMakroTopUp || defaultData;
+
     case 'take over':
     case 'makro take over':
       return kresunFile.dataMakroTakeOver || defaultData;
+
     case 'pospay new reguler':
       return kresunFile.dataPospayNewReguler || defaultData;
+
+    // ===== Skenario Kode Produk 3O =====
+    // Dipetakan terpisah dari skenario reguler di atas karena JSON-nya
+    // (New_3O, Topup_3O, takeover_3O) membawa 2 field tambahan khusus
+    // 3O: penghasilan_lain & nom_penghasilan_lain.
+    case 'new 3o':
+    case 'makro new 3o':
+      return kresunFile.New_3O || defaultData;
+
+    case 'top up 3o':
+    case 'makro top up 3o':
+      return kresunFile.Topup_3O || defaultData;
+
+    case 'take over 3o':
+    case 'makro take over 3o':
+      return kresunFile.takeover_3O || defaultData;
+
     default:
       console.warn(`Warning: Program "${jenisProgram}" tidak dikenali, menggunakan data default.`);
       return defaultData;
   }
 }
 
-const PROGRAM_TANPA_GENERATE_DB = ['top up', 'makro top up'];
+// Untuk top up (reguler maupun 3O) pake nopen dari json, bukan generate DB
+const PROGRAM_TANPA_GENERATE_DB = ['top up', 'makro top up', 'top up 3o', 'makro top up 3o'];
 
 function isTopUpProgram(jenisProgram: string): boolean {
   return PROGRAM_TANPA_GENERATE_DB.includes(jenisProgram.trim().toLowerCase());
 }
 
+// get nopen untuk take over dan new
 function getNopenArray(jenisProgram: string): string[] {
   if (isTopUpProgram(jenisProgram)) {
     const testData = getKresunTestData(jenisProgram);
@@ -58,42 +68,40 @@ function getNopenArray(jenisProgram: string): string[] {
     return Array.isArray(nopen) ? nopen : [nopen];
   }
 
+  // Non-Top Up: pakai nopen hasil generate dari database (step "Generate nopen melalui database").
   const nopenDariDb = nopenState.get();
   return [nopenDariDb];
 }
 
-When('Generate nopen melalui database', async ({ page }) => {
-  await withStepScreenshot(page, async () => {
-    const nopen = await generateNopen();
-    console.log(`[Step] Nopen berhasil di-generate: ${nopen}`);
-  });
+When('Generate nopen melalui database', async () => {
+  const nopen = await generateNopen();
+  console.log(`[Step] Nopen berhasil di-generate: ${nopen}`);
 });
 
-When('Pengguna membuka menu permohonan kresun {string}', async ({ page }, menuPath: string) => {
-  await withStepScreenshot(page, async () => {
-    const searchMenu = new SearchMenuCbs(page);
-    await searchMenu.navigateMenu(menuPath);
-  });
-});
+When(
+  'Pengguna membuka menu permohonan kresun {string}',
+  async ({ searchMenuCbs }, menuPath: string) => {
+    await searchMenuCbs.navigateMenu(menuPath);
+  }
+);
 
-Then(/^Sistem menampilkan halaman Permohonan Kredit Pensiun$/, async ({ page }) => {
-  await withStepScreenshot(page, async () => {
-    const permohonanKresun = new PermohonanKresun(page);
+Then(
+  /^Sistem menampilkan halaman Permohonan Kredit Pensiun$/,
+  async ({ page, permohonanKresun }) => {
     await expect(permohonanKresun.halPermohonanKresun).toBeVisible();
     await expect(permohonanKresun.halPermohonanKresun).toHaveText('Data Permohonan Pensiun');
-  });
-});
+    await page.waitForTimeout(5000);
+  }
+);
 
-When('Pengguna menginput nomor pensiun yang valid dan mengisi form permohonan {string}', async ({ page }, jenisProgram: string) => {
-  await withStepScreenshot(page, async () => {
-    const permohonanKresun = new PermohonanKresun(page);
-    const searchMenu = new SearchMenuCbs(page);
-
+When(
+  'Pengguna menginput nomor pensiun yang valid dan mengisi form permohonan {string}',
+  async ({ page, permohonanKresun, searchMenuCbs }, jenisProgram: string) => {
     const nopenArray = getNopenArray(jenisProgram);
     const testData = getKresunTestData(jenisProgram);
     let processedCount = 0;
 
-    console.log(`\nMULAI LOOPING PERMOHONAN KRESUN - PROGRAM: ${jenisProgram.toUpperCase()}`);
+    console.log(`\n MULAI LOOPING PERMOHONAN KRESUN - PROGRAM: ${jenisProgram.toUpperCase()}`);
     console.log(`Sumber NOPEN: ${isTopUpProgram(jenisProgram) ? 'JSON (manual)' : 'Database (generate)'}`);
     console.log(`Total NOPEN: ${nopenArray.length}`);
     console.log(`NOPEN: ${nopenArray.join(', ')}\n`);
@@ -101,22 +109,25 @@ When('Pengguna menginput nomor pensiun yang valid dan mengisi form permohonan {s
     for (let i = 0; i < nopenArray.length; i++) {
       const nopen = nopenArray[i];
       console.log(`\n========== ITERASI ${i + 1}/${nopenArray.length} - NOPEN: ${nopen} ==========`);
-
+      console.log(` Input NOPEN: ${nopen}`);
       try {
-        console.log('Step 1: Input nopen...');
+        console.log(`Step 1: Input nopen...`);
         await permohonanKresun.inputNopen(nopen);
 
-        console.log('Step 2: Check antrian popup...');
+        console.log(`Step 2: Check antrian popup...`);
         const isNopenInAntrian = await permohonanKresun.checkAndHandleAntrianPopup();
         if (isNopenInAntrian) {
           console.log(`NOPEN ${nopen} sedang dalam antrian, lanjut ke nopen berikutnya.`);
           continue;
         }
 
-        console.log('Step 3: Input data umum pensiun...');
+        console.log(`Step 3: Waiting untuk page fully loaded...`);
+        await page.waitForTimeout(1500);
+
+        console.log(`Step 4: Input data umum pensiun...`);
         await permohonanKresun.dataUmumPensiun();
 
-        console.log('Step 4: Input data anggota...');
+        console.log(`Step 5: Input data anggota...`);
         const norekKantor = String(testData.norek_kantor_bayar);
         const tinggiBadan = String(testData.tinggi_badan);
         const beratBadan = String(testData.berat_badan);
@@ -125,10 +136,10 @@ When('Pengguna menginput nomor pensiun yang valid dan mengisi form permohonan {s
 
         await permohonanKresun.dataAnggota(norekKantor, tinggiBadan, beratBadan, namaAhliWaris, noreferensi);
 
-        console.log('Step 5: Verify data gaji...');
+        console.log(`Step 6: Verify data gaji...`);
         await expect(permohonanKresun.titleDataGaji).toHaveText('Data Gaji');
 
-        console.log('Step 6: Input data permohonan...');
+        console.log(`Step 7: Input data permohonan...`);
         const permohonanKredit = String(testData.permohonan_kredit);
         const jangkaWaktu = String(testData.jangka_waktu);
         const kodeProduk = String(testData.kode_produk);
@@ -138,65 +149,104 @@ When('Pengguna menginput nomor pensiun yang valid dan mengisi form permohonan {s
         const kodeInstansi = String(testData.kode_instansi);
         const jenisPenggunaan = String(testData.jenis_penggunaan);
 
+        // PENTING: untuk routing flow (Take Over / New SK di Tangan / Top Up) di dalam
+        // permohonanKresun.dataPermohonan(), pakai testData.jenis_program (field di JSON),
+        // BUKAN parameter Cucumber "jenisProgram" mentah. Ini supaya skenario varian 3O
+        // (misal Cucumber step dipanggil dengan "New 3O") tetap ke-routing dengan benar
+        // ke handler "New (SK Di Tangan)", karena field jenis_program di JSON New_3O
+        // memang sudah diisi "New (SK Di Tangan)".
+        const jenisProgramUntukRouting = String(testData.jenis_program ?? jenisProgram);
+
+        // Menggunakan fallback data jika key di JSON tidak tersedia (aman untuk non-takeover)
         const mutasi = String(testData.data_mutasi ?? '');
         const kantorMutasi = String(testData.kantor_asal_mutasi ?? '');
         const bankAsalTakeOver = String(testData.bank_asal_take_over ?? '');
         const tipePelunasan = String(testData.tipe_pelunasan ?? '');
         const biayaTakeOver = String(testData.biaya_take_over ?? '');
 
+        // ===== Field khusus Kode Produk 3O =====
+        // Kosong ('') aman untuk skenario non-3O karena permohonanKresun.dataPermohonan()
+        // hanya akan input field ini kalau kodeProduk terparse sebagai "3O".
+        const penghasilanLain = String(testData.penghasilan_lain ?? '');
+        const nomPenghasilanLain = String(testData.nom_penghasilan_lain ?? '');
+
         await permohonanKresun.dataPermohonan(
-          permohonanKredit, jangkaWaktu, jenisProduk, jenisProgram, programPinjaman,
-          jenisPenggunaan, kodeProduk, jenisSK, kodeInstansi, mutasi, kantorMutasi,
-          bankAsalTakeOver, tipePelunasan, biayaTakeOver
+          permohonanKredit,
+          jangkaWaktu,
+          jenisProduk,
+          jenisProgramUntukRouting, // Routing pakai jenis_program dari JSON, bukan raw Cucumber string
+          programPinjaman,
+          jenisPenggunaan,
+          kodeProduk,
+          jenisSK,
+          kodeInstansi,
+          mutasi,
+          kantorMutasi,
+          bankAsalTakeOver,
+          tipePelunasan,
+          biayaTakeOver,
+          undefined, // nominalBlokir - belum dipakai dari JSON saat ini
+          penghasilanLain,
+          nomPenghasilanLain
         );
 
-        console.log('Step 7: Wait simulasi pinjaman...');
+        console.log(`Step 8: Wait simulasi pinjaman...`);
         await permohonanKresun.perhitunganSimulasiPinjaman();
 
-        console.log('Step 8: Submit permohonan...');
+        console.log(`Step 9: Submit permohonan...`);
         await permohonanKresun.submitPermohonanKresun();
 
-        console.log('Step 9: Verify success...');
+        console.log(`Step 10: Verify success...`);
         await expect(permohonanKresun.successSubmitPermohonanKresun).toBeVisible();
         await expect(permohonanKresun.successSubmitPermohonanKresun).toHaveText('Sukses register data');
 
         console.log(`Permohonan NOPEN ${nopen} berhasil disimpan`);
         processedCount++;
 
-        console.log('Step 10: Click OK success popup...');
-        const okButton = page.getByRole('button', { name: 'OK', exact: true });
-        await okButton.click({ timeout: 5000 });
-        console.log('Popup success ditutup');
+        console.log(`Step 12: Click OK success popup...`);
+        const OKbutton = page.locator('button:text-is("OK")');
+        await OKbutton.waitFor({ state: 'visible', timeout: 5000 });
+        await OKbutton.click();
+        await page.waitForTimeout(3000);
+
+        console.log(`Popup success ditutup`);
 
         if (i < nopenArray.length - 1) {
-          console.log(`\nPreparing untuk iterasi berikutnya (${i + 2}/${nopenArray.length})...`);
-          console.log('Step 11: Navigate ke home page...');
+          console.log(`\n⏳ Preparing untuk iterasi berikutnya (${i + 2}/${nopenArray.length})...`);
+          await page.waitForTimeout(2000);
+
+          console.log(`Step 13: Navigate ke home page...`);
           try {
-            // BUG DIPERBAIKI: asli hardcode 'http://10.30.8.40:5000/' — sekarang pakai CBS_URL dari .env.
-            await page.goto(`${process.env.CBS_URL}`, { waitUntil: 'domcontentloaded' });
-            await searchMenu.navigateMenu('Kredit  > Permohonan Kredit Pensiun');
-            console.log('Step 11 selesai: menu ter-navigasi kembali');
+            await page.goto('http://10.30.8.40:5000/');
+            console.log(`Step 13a: Home page navigation completed`);
+            await page.waitForTimeout(2000);
+
+            console.log(`Step 13b: Opening permohonan menu...`);
+            await searchMenuCbs.navigateMenu('Kredit  > Permohonan Kredit Pensiun');
+            console.log(`Step 13c: Menu navigated successfully`);
+            await page.waitForTimeout(1000);
           } catch (navError: any) {
-            console.log(`Step 11 warning: ${navError.message}`);
+            console.log(`Step 13 warning: ${navError.message}`);
+            await page.waitForTimeout(2000);
           }
+
+          console.log(`Ready untuk iterasi berikutnya`);
         }
       } catch (error: any) {
-        console.error(`\nERROR pada iterasi ${i + 1} (NOPEN: ${nopen})`);
+        console.error(`\n ERROR pada iterasi ${i + 1} (NOPEN: ${nopen})`);
         console.error(`Error message: ${error.message}`);
         throw error;
       }
 
       await expect(permohonanKresun.halPermohonanKresun).toHaveText('Data Permohonan Pensiun');
+      await page.waitForTimeout(2000);
     }
 
-    console.log('\n========== SUMMARY LOOPING ==========');
+    console.log(`\n========== SUMMARY LOOPING ==========`);
     console.log(`Total permohonan kresun yang berhasil: ${processedCount} dari ${nopenArray.length} Nopen yang diproses.`);
-  });
-});
+  }
+);
 
-When(/^Pengguna Logout dari cbs$/, async ({ page }) => {
-  await withStepScreenshot(page, async () => {
-    const logoutPage = new LogoutPage(page);
-    await logoutPage.logout();
-  });
+When(/^Pengguna Logout dari cbs$/, async ({ logoutPage }) => {
+  await logoutPage.logout();
 });

@@ -1,9 +1,9 @@
 {
   "cucumber.features": [
-    "src/features/**/*.feature"
+    "test/features/**/*.feature"
   ],
   "cucumber.glue": [
-    "src/steps/**/*.ts",
+    "test/src/step-definitions/**/*.ts",
     "src/support/**/*.ts"
   ]
 }

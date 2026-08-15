@@ -1,11 +1,14 @@
 import * as dotenv from 'dotenv';
-dotenv.config(); 
+import * as path from 'path';
+
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+
 import { defineConfig, devices } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
 
 const testDir = defineBddConfig({
-  features: 'src/features/**/*.feature',
-  steps: ['src/steps/**/*.ts', 'src/support/**/*.ts'],
+  features: 'test/features/**/*.feature',
+  steps: ['test/src/step-definitions/**/*.ts', 'src/support/**/*.ts'],
 });
   
 /**
@@ -44,7 +47,7 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   
   use: {
-    baseURL: process.env.RCS_URL_LOGIN,
+    baseURL: process.env.RCS_URL_LOGIN || process.env.CBS_URL,
     headless: process.env.HEADLESS !== 'false',
     // screenshot: 'only-on-failure',
     screenshot: 'off',  // off karena di handle manual per step Gherkin
