@@ -1,0 +1,14 @@
+{
+  "userCabang": {
+    "username": "509DIRWAN",
+    "password": "Bdi123",
+    "message": "Selamat Datang di Aplikasi CBS"
+  },
+  "userPusat": [
+    {
+      "username": "001DIRWAN",
+      "password": "Bdi123",
+      "message": "Selamat Datang di Aplikasi CBS"
+    }
+  ]
+}

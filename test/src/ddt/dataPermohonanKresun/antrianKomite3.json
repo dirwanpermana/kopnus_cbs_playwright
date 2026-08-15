@@ -1,0 +1,54 @@
+{
+  "documentAntrianKomite3": {
+    "E-KTP": ["Pending","Pending KTP"],
+    "Kartu Keluarga (KK) debitur": "Approve",
+    "Kartu Keluarga (KK) ahli waris": ["Pending","Pending KK"],
+    "E-KTP suami/ Istri atau ahli waris":["Pending","Pending KTP AW"],
+    "NPWP": ["Pending","Pending NPWP"],
+    "Tanda Terima Penyerahan Jaminan": "Approve",
+    "Display Gaji": ["Pending","Display Gaji Pending"],
+    "Disposisi/ Odoo persetujuan pusat": ["Pending","Pending Odoo"],
+    "Surat Keterangan Kesehatan Tertanggung (SKKT) atau SPA": ["Pending","Pending SPA Pending"],
+    "Surat Keputusan Pensiun (SKEP)": ["Pending","Pending SKEP"],
+    "KARIP/ E-KARIP/ Buku Asabri": "Approve",
+    "Form Keanggotaan": ["Pending","Pending form keanggotaan"],
+    "Surat Keterangan Sisa Uang Pensiun (SKSUP)": "Approve",
+    "Aplikasi Permohonan Pinjaman Pensiun": "Approve",
+    "Surat pernyataan/surat keterangan dari dari kantor bayar": "Approve",
+    "Bukti Setor": "Approve",
+    "Lainnya 3": ["Pending","Pending lainnya"]
+  },
+  "antrianKomite2": {
+    "E-KTP": "Approve",
+    "Kartu Keluarga (KK) debitur": "Approve",
+    "Kartu Keluarga (KK) ahli waris": "Approve",
+    "NPWP": "Approve",
+    "Tanda Terima Penyerahan Jaminan": "Approve",
+    "Display Gaji": "Approve",
+    "Surat Keputusan Pensiun (SKEP)": "Approve",
+    "KARIP/ E-KARIP/ Buku Asabri": "Approve",
+    "Form Keanggotaan": "Approve",
+    "Surat Keterangan Sisa Uang Pensiun (SKSUP)": "Approve",
+    "Aplikasi Permohonan Pinjaman Pensiun": "Approve",
+    "Surat pernyataan/surat keterangan dari dari kantor bayar": "Approve",
+    "Bukti Setor": "Approve"
+  },
+  "antrianKomite1": {
+    "E-KTP": "Approve",
+    "Kartu Keluarga (KK) debitur": "Approve",
+    "Kartu Keluarga (KK) ahli waris": "Approve",
+    "NPWP": "Approve",
+    "Tanda Terima Penyerahan Jaminan": "Approve",
+    "Display Gaji": ["Pending","Display Gaji Pending"],
+    "Disposisi/ Odoo persetujuan pusat": ["Pending","Disposisi/ Odoo persetujuan pusat Pending"],
+    "Surat Keterangan Kesehatan Tertanggung (SKKT) atau SPA": ["Pending","Surat Keterangan Kesehatan Tertanggung (SKKT) atau SPA Pending"],
+    "Surat Keputusan Pensiun (SKEP)": "Approve",
+    "KARIP/ E-KARIP/ Buku Asabri": "Approve",
+    "Form Keanggotaan": "Approve",
+    "Surat Keterangan Sisa Uang Pensiun (SKSUP)": "Approve",
+    "Aplikasi Permohonan Pinjaman Pensiun": "Approve",
+    "Surat pernyataan/surat keterangan dari dari kantor bayar": "Approve",
+    "Bukti Setor": "Approve"
+  }
+}
+
