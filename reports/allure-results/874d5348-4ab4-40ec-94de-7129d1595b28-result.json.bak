@@ -1,0 +1,300 @@
+{
+  "uuid": "874d5348-4ab4-40ec-94de-7129d1595b28",
+  "name": "Added New Tipe Dokumen and validate data in table",
+  "historyId": "70987fa7eff31869723a1fea1c78cbde:5bd835b0d6b1d4ada3b9f0db936e82c8",
+  "status": "passed",
+  "statusDetails": {},
+  "stage": "finished",
+  "steps": [
+    {
+      "name": "User berada di halaman login rcs",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: User berada di halaman login rcs",
+          "source": "e085deca-d79e-4f9f-afa9-4c7100249a83-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "User login dengan akun \"HQ_SUPERADMIN\"",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: User login dengan akun \"HQ_SUPERADMIN\"",
+          "source": "1edceb91-f2d5-4ee2-8b35-a4c5475f2061-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "Berhasil login dan direct ke halaman dashboard",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: Berhasil login dan direct ke halaman dashboard",
+          "source": "7bde4074-de82-42d2-8aca-648c6a92c64e-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "Pilih menu \"Master > Tipe Dokumen\"",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: Pilih menu \"Master > Tipe Dokumen\"",
+          "source": "6872a2ca-3727-46a2-99ef-3658a7a2235b-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "Verify halaman Tipe Dokumen",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: Verify halaman Tipe Dokumen",
+          "source": "9fae2003-87f0-4d31-83a8-7fe02fa7e98a-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "User klik tombol Tambah Tipe Dokumen",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: User klik tombol Tambah Tipe Dokumen",
+          "source": "3c3e69be-689f-4730-a61c-8656c3345bca-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "Verify halaman Tambah Tipe Dokumen",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: Verify halaman Tambah Tipe Dokumen",
+          "source": "04b66262-4f93-4b74-b72d-c93ac79a627b-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "Input form tambah tipe dokumen \"Dokumen Negara KL\"",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: Input form tambah tipe dokumen \"Dokumen Negara KL\"",
+          "source": "5522a4da-f831-4460-826f-cef6e6064e70-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "Klik simpan tipe dokumen",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: Klik simpan tipe dokumen",
+          "source": "e8990bb3-c31f-47b3-8c2f-17453e2009d5-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "validasi success message",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: validasi success message",
+          "source": "6aea597c-c6e8-4b68-9671-2b8cd07b394c-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "Verify data tipe dokumen \"Dokumen Negara KL\" tampil pada tabel",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: Verify data tipe dokumen \"Dokumen Negara KL\" tampil pada tabel",
+          "source": "170f58d2-7a0d-4b44-b6c3-1f138018134f-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "User klik icon aksi pada tipe dokumen \"Dokumen Negara KL\"",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: User klik icon aksi pada tipe dokumen \"Dokumen Negara KL\"",
+          "source": "747eff54-5edc-4d58-8b9a-57490c45e7a4-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "Verify halaman Detail Tipe Dokumen",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: Verify halaman Detail Tipe Dokumen",
+          "source": "fb04483e-544e-40d1-91ee-bf721a676bee-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    },
+    {
+      "name": "Validasi detail halaman tipe dokumen \"Dokumen Negara KL\"",
+      "status": "passed",
+      "statusDetails": {},
+      "stage": "finished",
+      "steps": [],
+      "attachments": [
+        {
+          "name": "Step: Validasi detail halaman tipe dokumen \"Dokumen Negara KL\"",
+          "source": "69ebf942-4b29-4dad-a5a5-ed6039017fd8-attachment.png",
+          "type": "image/png"
+        }
+      ],
+      "parameters": []
+    }
+  ],
+  "attachments": [
+    {
+      "name": "stdout",
+      "source": "03f1c1fd-2252-453f-aa2d-4e3413c2e56a-attachment.txt",
+      "type": "text/plain"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "Project",
+      "value": "chromium"
+    }
+  ],
+  "labels": [
+    {
+      "name": "language",
+      "value": "javascript"
+    },
+    {
+      "name": "framework",
+      "value": "playwright"
+    },
+    {
+      "name": "package",
+      "value": "rcs_playwright.src.features.fitur_tipe_dokumen.add_tipe_dokumen.feature.spec.js"
+    },
+    {
+      "name": "_fallbackTestCaseId",
+      "value": "3038abfdaa08d6121510824bdc3930ae"
+    },
+    {
+      "name": "titlePath",
+      "value": " > chromium > src/features/fitur_tipe_dokumen/add_tipe_dokumen.feature.spec.js > Add Tipe Dokumen"
+    },
+    {
+      "name": "tag",
+      "value": "ui"
+    },
+    {
+      "name": "tag",
+      "value": "tipe_dokumen"
+    },
+    {
+      "name": "tag",
+      "value": "add_tipe_dokumen"
+    },
+    {
+      "name": "host",
+      "value": "DESKTOP-LM9QA2O"
+    },
+    {
+      "name": "thread",
+      "value": "pid-164444-worker-0"
+    },
+    {
+      "name": "parentSuite",
+      "value": "chromium"
+    },
+    {
+      "name": "suite",
+      "value": "src/features/fitur_tipe_dokumen/add_tipe_dokumen.feature.spec.js"
+    },
+    {
+      "name": "subSuite",
+      "value": "Add Tipe Dokumen"
+    }
+  ],
+  "links": [],
+  "start": 1783400258944,
+  "testCaseId": "70987fa7eff31869723a1fea1c78cbde",
+  "fullName": "src/features/fitur_tipe_dokumen/add_tipe_dokumen.feature.spec.js:6:7",
+  "titlePath": [
+    "rcs_playwright",
+    "src",
+    "features",
+    "fitur_tipe_dokumen",
+    "add_tipe_dokumen.feature.spec.js",
+    "Add Tipe Dokumen"
+  ],
+  "stop": 1783400267807
+}

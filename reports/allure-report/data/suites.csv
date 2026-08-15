@@ -1,0 +1,2 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","8863","Added New Tipe Dokumen and validate data in table","chromium","2026-07-07","passed","2026-07-07","Add Tipe Dokumen","src/features/fitur_tipe_dokumen/add_tipe_dokumen.feature.spec.js","",""

@@ -1,0 +1,12 @@
+Loading DB env from /home/dirwan/automation-playwright/rcs_playwright/.env
+◇ injected env (32) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+DB helper using config {
+  host: '10.30.8.14',
+  port: 5432,
+  database: 'db_compliance',
+  user: 'postgres',
+  ssl: false
+}
+   ✓ Klik menu "Master"
+   ✓ Klik menu "Tipe Dokumen"
+navigateMenu selesai untuk: Master > Tipe Dokumen

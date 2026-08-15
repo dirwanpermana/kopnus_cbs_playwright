@@ -1,0 +1,1 @@
+//  File hasil codegen otomatis dari bddgen
